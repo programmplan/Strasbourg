@@ -1,0 +1,10 @@
+{
+  "weekdays": ["Mo", "Di", "Mi", "Do", "Fr"],
+  "timeslots": ["08:00–09:30","09:45–11:15","11:30–13:00","14:00–15:30","15:45–17:15"],
+  "entries": [
+    { "day":"Mo", "slot":"08:00–09:30", "title":"Mathe", "room":"H-101", "note":"" },
+    { "day":"Mi", "slot":"11:30–13:00", "title":"Informatik", "room":"G-203", "note":"Übung" },
+    { "day":"Fr", "slot":"14:00–15:30", "title":"ET", "room":"L-2", "note":"" }
+  ],
+  "lastUpdated": "2025-09-27"
+}
