@@ -3,7 +3,8 @@
   const last = document.getElementById("last-updated");
 
   // schedule.json vom Repo lesen
-  const res = await fetch("./data/schedule.json?v=" + Date.now(), { cache: "no-store" });
+  const res = await fetch('./data/schedule.json?v=' + Date.now(), { cache: 'no-store' });
+
   const data = await res.json();
 
   last.textContent = `Stand: ${data.lastUpdated}`;
