@@ -3,7 +3,7 @@
   const last = document.getElementById("last-updated");
 
   // schedule.json vom Repo lesen
-  const res = await fetch("./data/schedule.json");
+  const res = await fetch("./data/schedule.json?v=" + Date.now(), { cache: "no-store" });
   const data = await res.json();
 
   last.textContent = `Stand: ${data.lastUpdated}`;
@@ -12,6 +12,7 @@
   const table = document.createElement("table");
   table.className = "table";
 
+    
   // Kopfzeile
   const thead = document.createElement("thead");
   const headRow = document.createElement("tr");
