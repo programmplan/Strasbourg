@@ -17,7 +17,7 @@
 
   const isEmptyTitle = (t) => {
     const n = norm(t);
-    return !n || n === "-" || n === "—";
+    return !n || n === "-" || n === "";
   };
 
   // FARBREGELN (Titel -> Klasse)
@@ -27,10 +27,10 @@
     if (!t || isEmptyTitle(t)) return ""; // nichts färben
 
     // GOLD
-    if (/(abfahrt.*fajr|einchecken)/i.test(t)) return "cell-gold";
+    if (/(abfahrt.*fajr|einchecken|abschluss quiz, verabschiedung und ausblick)/i.test(t)) return "cell-gold";
 
     // HELLBLAU (Vorträge allgemein + spezielle)
-    if (/(koranrezitation|vortrag|rechtsschulen|sira|beweise des islams|fiqh|wer ist al amin|karriere als muslim)/i.test(t)) {
+    if (/(koranrezitation|vortrag|rechtsschulen|sira|beweise des islams|fiqh|wer ist al amin|karriere als muslim|Wege, der Ungerechtigkeit entgegenzuwirken (Batu)|wie gehen wir mit dem anderen geschlecht um? )/i.test(t)) {
       return "cell-blue";
     }
 
@@ -112,7 +112,7 @@
     // Gebetszeiten-Spalte
     const prayerCell = document.createElement("td");
     const prayer = data.prayerTimes ? data.prayerTimes[slot] : "";
-    prayerCell.textContent = prayer ? "" : "—";
+    prayerCell.textContent = prayer ? "" : "";
     if (prayer) {
       const badge = document.createElement("span");
       badge.className = "badge";
@@ -155,7 +155,7 @@
           td.appendChild(meta);
         }
       } else {
-        td.textContent = "—";
+        td.textContent = "";
       }
 
       tr.appendChild(td);
