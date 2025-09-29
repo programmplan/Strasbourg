@@ -12,8 +12,13 @@
   const days = data.weekdays;
 
   // ----- Helfer -----
-  const norm = (s) => (s || "").toString().trim().toLowerCase()
-    .replace(/[’'"]/g, ""); // einfache Normalisierung
+  const norm = (s) => (s || "")
+    .toString()
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[’'“”"()?\-–,.:;!]/g, "") // Klammern/Anführungszeichen/Interpunktion raus
+    .replace(/\s+/g, " ")
+    .trim();
 
   const isEmptyTitle = (t) => {
     const n = norm(t);
@@ -27,15 +32,18 @@
     if (!t || isEmptyTitle(t)) return ""; // nichts färben
 
     // GOLD
-    if (/(abfahrt.*fajr|einchecken|abschluss quiz, verabschiedung und ausblick)/i.test(t)) return "cell-gold";
+    if (/(abfahrt.*fajr|einchecken|abschluss quiz.*ausblick)/i.test(t)) return "cell-gold";
 
     // HELLBLAU (Vorträge allgemein + spezielle)
-    if (/(koranrezitation|vortrag|rechtsschulen|sira|beweise des islams|fiqh|wer ist al amin|karriere als muslim|wege, der ungerechtigkeit entgegenzuwirken (batu)|wie gehen wir mit dem anderen geschlecht um )/i.test(t)) {
+    // Deckt u.a. ab:
+    //  - "Wie gehen wir mit dem anderen Geschlecht um?"
+    //  - "Wege, der Ungerechtigkeit entgegenzuwirken (Batu)"
+    if (/(koranrezitation|vortrag|rechtsschulen|sira|beweise des islams|fiqh|wer ist al amin|karriere als muslim|wege der ungerechtigkeit entgegenzuwirken batu|wie gehen wir mit dem anderen geschlecht um)/i.test(t)) {
       return "cell-blue";
     }
 
     // GRAU/WEISS (Mahlzeiten & Pausen)
-    if (/(mittagessen|abendessen|pause|kurze pause)/i.test(t)) return "cell-gray";
+    if (/(mittagessen|abendessen|\bpause\b|kurze pause)/i.test(t)) return "cell-gray";
 
     // ORANGE (reine Freizeit)
     if (/\bfreizeit\b/i.test(t)) return "cell-orange";
@@ -53,7 +61,7 @@
 
   // gleiche Einträge mergen (nur nicht-leere)
   const signature = (e) => {
-    if (!e || isEmptyTitle(e.title) && isEmptyTitle(e.room) && isEmptyTitle(e.note)) return "";
+    if (!e || (isEmptyTitle(e.title) && isEmptyTitle(e.room) && isEmptyTitle(e.note))) return "";
     const t = norm(e.title);
     const r = norm(e.room);
     const n = norm(e.note);
@@ -109,10 +117,9 @@
     timeCell.textContent = slot;
     tr.appendChild(timeCell);
 
-    // Gebetszeiten-Spalte
+    // Gebetszeiten-Spalte (leer wenn nichts)
     const prayerCell = document.createElement("td");
     const prayer = data.prayerTimes ? data.prayerTimes[slot] : "";
-    prayerCell.textContent = prayer ? "" : "";
     if (prayer) {
       const badge = document.createElement("span");
       badge.className = "badge";
@@ -154,9 +161,7 @@
           meta.innerHTML = metaParts.join(" · ");
           td.appendChild(meta);
         }
-      } else {
-        td.textContent = "";
-      }
+      } // sonst leer lassen
 
       tr.appendChild(td);
     });
