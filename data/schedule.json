@@ -64,8 +64,8 @@
     { "day": "Sa", "slot": "20:30-21:00", "title": ""},
 
     { "day": "So", "slot": "08:00", "title": ""},
-    { "day": "So", "slot": "09:00", "title": "Wer ist Al Amin?"},
-    { "day": "So", "slot": "10:00-10:30", "title": "Wer ist Al Amin?"},
+    { "day": "So", "slot": "09:00", "title": " 'Wer ist Al Amin?' "},
+    { "day": "So", "slot": "10:00-10:30", "title": " 'Wer ist Al Amin?' "},
     { "day": "So", "slot": "10:30-11:00", "title": "Pause"},
     { "day": "So", "slot": "11:00-11:30", "title": " 'Lehren aus der Sira - 1' "},
     { "day": "So", "slot": "11:30-12:00", "title": " 'Lehren aus der Sira - 1' "},
@@ -163,5 +163,5 @@
     { "day": "Mi", "slot": "20:00-20:30", "title": ""},
     { "day": "Mi", "slot": "20:30-21:00", "title": ""}
   ],
-  "lastUpdated": "2025-09-29, 11:10 Uhr"
+  "lastUpdated": "2025-09-29, 11:15 Uhr"
 }
