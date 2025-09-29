@@ -30,7 +30,7 @@
     if (/(abfahrt.*fajr|einchecken|abschluss quiz, verabschiedung und ausblick)/i.test(t)) return "cell-gold";
 
     // HELLBLAU (Vorträge allgemein + spezielle)
-    if (/(koranrezitation|vortrag|rechtsschulen|sira|beweise des islams|fiqh|wer ist al amin|karriere als muslim|Wege, der Ungerechtigkeit entgegenzuwirken (Batu)|wie gehen wir mit dem anderen geschlecht um? )/i.test(t)) {
+    if (/(koranrezitation|vortrag|rechtsschulen|sira|beweise des islams|fiqh|wer ist al amin|karriere als muslim|wege, der ungerechtigkeit entgegenzuwirken (batu)|wie gehen wir mit dem anderen geschlecht um )/i.test(t)) {
       return "cell-blue";
     }
 
