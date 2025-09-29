@@ -11,18 +11,56 @@
   const timeslots = data.timeslots;
   const days = data.weekdays;
 
-  // Hilfen
-  const findEntry = (day, slot) => data.entries.find(e => e.day === day && e.slot === slot);
-  const signature = (e) => {
-    if (!e) return "";
-    const t = (e.title || "").trim();
-    const r = (e.room || "").trim();
-    const n = (e.note || "").trim();
-    return (t || r || n) ? `${t}|${r}|${n}` : ""; // nur nicht-leere Einträge mergen
+  // ----- Helfer -----
+  const norm = (s) => (s || "").toString().trim().toLowerCase()
+    .replace(/[’'"]/g, ""); // einfache Normalisierung
+
+  const isEmptyTitle = (t) => {
+    const n = norm(t);
+    return !n || n === "-" || n === "—";
   };
 
-  // Für jedes Day die Run-Längen über die Timeslots vorberechnen
-  // runs[day][i] = Anzahl zusammenhängender Slots ab i (wenn Start), -1 (wenn innerhalb eines Runs), 0 (leer/kein Merge)
+  // FARBREGELN (Titel -> Klasse)
+  function colorClassFor(titleRaw) {
+    const t = norm(titleRaw);
+
+    if (!t || isEmptyTitle(t)) return ""; // nichts färben
+
+    // GOLD
+    if (/(abfahrt.*fajr|einchecken)/i.test(t)) return "cell-gold";
+
+    // HELLBLAU (Vorträge allgemein + spezielle)
+    if (/(koranrezitation|vortrag|rechtsschulen|sira|beweise des islams|fiqh|wer ist al amin|karriere als muslim)/i.test(t)) {
+      return "cell-blue";
+    }
+
+    // GRAU/WEISS (Mahlzeiten & Pausen)
+    if (/(mittagessen|abendessen|pause|kurze pause)/i.test(t)) return "cell-gray";
+
+    // ORANGE (reine Freizeit)
+    if (/\bfreizeit\b/i.test(t)) return "cell-orange";
+
+    // GRÜN (Freizeitaktivitäten)
+    if (/(gemeinsames.*ilahi|wanderung|stadtbesichtigung|soccerhalle|workshop|gemeinsames.*(kuran|koran)\s*lesen)/i.test(t)) {
+      return "cell-green";
+    }
+
+    // Fallback: nichts
+    return "";
+  }
+
+  const findEntry = (day, slot) => data.entries.find(e => e.day === day && e.slot === slot);
+
+  // gleiche Einträge mergen (nur nicht-leere)
+  const signature = (e) => {
+    if (!e || isEmptyTitle(e.title) && isEmptyTitle(e.room) && isEmptyTitle(e.note)) return "";
+    const t = norm(e.title);
+    const r = norm(e.room);
+    const n = norm(e.note);
+    return `${t}|${r}|${n}`;
+  };
+
+  // Runs je Tag vorberechnen
   const runs = {};
   days.forEach(day => {
     const arr = new Array(timeslots.length).fill(0);
@@ -56,6 +94,7 @@
   days.forEach(d => {
     const th = document.createElement("th");
     th.textContent = d;
+    th.classList.add(`col-${d.toLowerCase()}`); // Spaltenklasse
     headRow.appendChild(th);
   });
   thead.appendChild(headRow);
@@ -82,25 +121,25 @@
     }
     tr.appendChild(prayerCell);
 
-    // Tagesspalten mit Rowspan-Merge
+    // Tagesspalten mit Rowspan-Merge + Farblogik
     days.forEach(day => {
       const run = runs[day][rowIdx];
-
-      if (run === -1) {
-        // Innerhalb eines zusammengefassten Blocks -> KEINE Zelle hier einfügen
-        return;
-      }
+      if (run === -1) return; // innerhalb eines Blocks -> keine Zelle rendern
 
       const td = document.createElement("td");
+      td.classList.add(`col-${day.toLowerCase()}`); // Spaltenklasse
 
-      if (run > 1) {
-        td.rowSpan = run; // vertikal zusammenfassen
-      }
+      if (run > 1) td.rowSpan = run; // vertikal zusammenfassen
 
       const entry = findEntry(day, slot);
+
       if (entry && signature(entry)) {
+        // Farbe vergeben (nach Titel)
+        const cls = colorClassFor(entry.title);
+        if (cls) td.classList.add(cls);
+
         // Titel
-        if (entry.title && entry.title.trim()) {
+        if (!isEmptyTitle(entry.title)) {
           const title = document.createElement("div");
           title.innerHTML = `<strong>${entry.title.trim()}</strong>`;
           td.appendChild(title);
@@ -108,8 +147,8 @@
 
         // Meta (nur wenn vorhanden)
         const metaParts = [];
-        if (entry.room && entry.room.trim()) metaParts.push(`<span class="badge">${entry.room.trim()}</span>`);
-        if (entry.note && entry.note.trim()) metaParts.push(entry.note.trim());
+        if (!isEmptyTitle(entry.room)) metaParts.push(`<span class="badge">${entry.room.trim()}</span>`);
+        if (!isEmptyTitle(entry.note)) metaParts.push(entry.note.trim());
         if (metaParts.length) {
           const meta = document.createElement("div");
           meta.innerHTML = metaParts.join(" · ");

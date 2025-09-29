@@ -17,3 +17,19 @@ h1 { margin:0 0 1rem; }
 @media (max-width: 700px) {
   .table { font-size:.9rem; }
 }
+/* Zellfarben (Thema) */
+:root{
+  --gold:  #fef3c7; /* helles Gold/Amber */
+  --blue:  #e0f2fe; /* sehr helles Blau  */
+  --gray:  #f3f4f6; /* Weiß/Grau         */
+  --orange:#ffedd5; /* zartes Orange     */
+  --green: #dcfce7; /* zartes Grün       */
+}
+
+/* höhere Spezifität als Spaltenhintergrund */
+.table td.cell-gold  { background: var(--gold); }
+.table td.cell-blue  { background: var(--blue); }
+.table td.cell-gray  { background: var(--gray); }
+.table td.cell-orange{ background: var(--orange); }
+.table td.cell-green { background: var(--green); }
+
