@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="app-version" content="2025-09-29-6" />
+  <title>Program (TR)</title>
+  <link rel="icon" href="../assets/img/favicon.png" />
+  <script>
+    (function () {
+      const v = document.querySelector('meta[name="app-version"]').content;
+      const css = document.createElement('link'); css.rel='stylesheet'; css.href = '../assets/css/style.css?v='+encodeURIComponent(v);
+      document.head.appendChild(css);
+      const js = document.createElement('script'); js.src = '../assets/js/app.js?v='+encodeURIComponent(v); js.defer = true;
+      document.head.appendChild(js);
+    })();
+  </script>
+</head>
+<body>
+  <main class="container">
+    <div class="header-bar">
+      <h1>Program (TR)</h1>
+      <a class="btn" href="../">DE Seite</a>
+    </div>
+    <div id="last-updated"></div>
+    <div id="timetable"></div>
+  </main>
+</body>
+</html>
