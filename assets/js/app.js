@@ -8,52 +8,6 @@
 
   last.textContent = `Stand: ${data.lastUpdated}`;
 
-  // ---- Türkisch-Popup Button ----
-const trBtn = document.getElementById("btn-tr");
-
-// Hilfsrenderer: einfache Tabelle ohne Merges (nur fürs Popup)
-function renderSimpleTableHTML(d) {
-  let html = '<table class="table"><thead><tr><th>Zaman</th>';
-  d.weekdays.forEach(w => { html += `<th>${w}</th>`; });
-  html += '</tr></thead><tbody>';
-
-  d.timeslots.forEach(slot => {
-    html += `<tr><td>${slot}</td>`;
-    d.weekdays.forEach(day => {
-      const e = d.entries.find(x => x.day === day && x.slot === slot);
-      html += `<td>${e && e.title ? `<strong>${e.title}</strong>` : ""}</td>`;
-    });
-    html += '</tr>';
-  });
-
-  html += '</tbody></table>';
-  return html;
-}
-
-async function openTurkishPopup() {
-  try {
-    // Türkische Version laden (siehe Ordnerstruktur unten)
-    const res = await fetch("./tr/data/schedule.json?v=" + Date.now(), { cache: "no-store" });
-    if (!res.ok) throw new Error("TR schedule nicht gefunden");
-    const trData = await res.json();
-
-    // Modal öffnen + HTML einsetzen
-    // in openTurkishPopup() NACH dem Laden der TR-Daten:
-openModal({ title: "Türkçe Program", size: "full" });
-
-    const body = document.getElementById("modal-body");
-    body.innerHTML = renderSimpleTableHTML(trData) +
-      `<div style="margin-top:12px;">
-         <a class="btn" href="tr/">Vollständige türkische Seite →</a>
-       </div>`;
-  } catch (e) {
-    openModal({ title: "Türkçe Program", note: "Türkische Daten nicht gefunden." });
-  }
-}
-
-if (trBtn) trBtn.addEventListener("click", openTurkishPopup);
-
-
   const timeslots = data.timeslots;
   const days = data.weekdays;
 
@@ -62,112 +16,105 @@ if (trBtn) trBtn.addEventListener("click", openTurkishPopup);
   const modalTitle = document.getElementById("modal-title");
   const modalBody  = document.getElementById("modal-body");
   const modalClose = document.getElementById("modal-close");
+  const modalEl    = document.querySelector("#modal-backdrop .modal");
 
-  const modalEl = document.querySelector("#modal-backdrop .modal");
-
-function setModalSize(preset = "md") {
-  if (!modalEl) return;
-  modalEl.classList.remove("modal--full");   // weitere Presets könntest du hier ebenfalls entfernen
-  if (preset === "full") modalEl.classList.add("modal--full");
-}
-
+  function setModalSize(preset = "md") {
+    if (!modalEl) return;
+    modalEl.classList.remove("modal--full");
+    if (preset === "full") modalEl.classList.add("modal--full");
+  }
 
   function openModal({ title, day, slot, room, note, prayer, size = "md" }) {
-  if (!backdrop) return;
-  setModalSize(size);
-  modalTitle.textContent = title && title.trim() ? title.trim() : "Details";
+    if (!backdrop) return;
+    setModalSize(size);
+    modalTitle.textContent = title && title.trim() ? title.trim() : "Details";
 
-  modalBody.innerHTML = "";
-  const addRow = (label, value) => {
-    if (!value) return;
-    const row = document.createElement("div");
-    const strong = document.createElement("strong");
-    strong.textContent = label + ": ";
-    const span = document.createElement("span");
-    span.textContent = value;
-    row.appendChild(strong);
-    row.appendChild(span);
-    modalBody.appendChild(row);
-  };
-  addRow("Tag", day);
-  addRow("Zeit", slot);
-  addRow("Gebet", prayer);
-  addRow("Raum", room && room?.trim());
-  addRow("Notiz", note && note?.trim());
+    modalBody.innerHTML = "";
+    const addRow = (label, value) => {
+      if (!value) return;
+      const row = document.createElement("div");
+      const strong = document.createElement("strong");
+      strong.textContent = label + ": ";
+      const span = document.createElement("span");
+      span.textContent = value;
+      row.appendChild(strong);
+      row.appendChild(span);
+      modalBody.appendChild(row);
+    };
+    addRow("Tag", day);
+    addRow("Zeit", slot);
+    addRow("Gebet", prayer);
+    addRow("Raum", room && room?.trim());
+    addRow("Notiz", note && note?.trim());
 
-  document.body.classList.add("modal-open");
-  backdrop.classList.add("open");
-  backdrop.setAttribute("aria-hidden", "false");
-  document.addEventListener("keydown", escToClose);
-  if (modalClose) modalClose.focus();
-}
-function closeModal() {
-  if (!backdrop) return;
-  document.body.classList.remove("modal-open");
-  backdrop.classList.remove("open");
-  backdrop.setAttribute("aria-hidden", "true");
-  document.removeEventListener("keydown", escToClose);
-}
-
+    document.body.classList.add("modal-open");
+    backdrop.classList.add("open");
+    backdrop.setAttribute("aria-hidden", "false");
+    document.addEventListener("keydown", escToClose);
+    if (modalClose) modalClose.focus();
+  }
   function closeModal() {
     if (!backdrop) return;
+    document.body.classList.remove("modal-open");
     backdrop.classList.remove("open");
     backdrop.setAttribute("aria-hidden", "true");
     document.removeEventListener("keydown", escToClose);
   }
-  function escToClose(e) {
-    if (e.key === "Escape") closeModal();
-  }
-  if (backdrop) {
-    backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
-  }
-  if (modalClose) {
-    modalClose.addEventListener("click", closeModal);
-  }
+  function escToClose(e) { if (e.key === "Escape") closeModal(); }
+  if (backdrop) backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
+  if (modalClose) modalClose.addEventListener("click", closeModal);
 
   // ----- Helfer -----
+  // Türkische Sonderzeichen -> ASCII, dann normalisieren
+  const TR_MAP = { "ç":"c", "ğ":"g", "ı":"i", "ö":"o", "ş":"s", "ü":"u" };
   const norm = (s) => (s || "")
     .toString()
     .toLowerCase()
+    .replace(/[çğışöü]/g, ch => TR_MAP[ch])   // TR letters
     .normalize("NFKD")
-    .replace(/[’'“”"()?\-–,.:;!]/g, "") // Klammern/Anführungszeichen/Interpunktion raus
+    .replace(/[\u0300-\u036f]/g, "")         // Diakritika
+    .replace(/[’'“”"()?\-–,.:;!]/g, "")      // Interpunkt.
     .replace(/\s+/g, " ")
     .trim();
+
+  // Slug für Spaltenklassen (funktioniert für DE & TR)
+  const daySlug = (s) => norm(s).replace(/\s+/g, "-");
 
   const isEmptyTitle = (t) => {
     const n = norm(t);
     return !n || n === "-" || n === "";
   };
 
-  // FARBREGELN (Titel -> Klasse)
+  // FARBREGELN (Titel -> Klasse)  DE + TR
   function colorClassFor(titleRaw) {
     const t = norm(titleRaw);
+    if (!t || isEmptyTitle(t)) return "";
 
-    if (!t || isEmptyTitle(t)) return ""; // nichts färben
+    // GOLD (Abfahrt/Check-in + Abschluss)
+    if (/(abfahrt.*fajr|einchecken|check ?in|sabah.*fecir.*hareket|varis.*check ?in|kapanis quiz.*(vedalas|degerlendirme|ausblick)?)/i.test(t)) {
+      return "cell-gold";
+    }
 
-    // GOLD
-    if (/(abfahrt.*fajr|einchecken|abschluss quiz.*ausblick)/i.test(t)) return "cell-gold";
-
-    // HELLBLAU (Vorträge allgemein + spezielle)
-    // Deckt u.a. ab:
-    //  - "Wie gehen wir mit dem anderen Geschlecht um?"
-    //  - "Wege, der Ungerechtigkeit entgegenzuwirken (Batu)"
-    if (/(koranrezitation|vortrag|rechtsschulen|sira|beweise des islams|fiqh|wer ist al amin|karriere als muslim|wege der ungerechtigkeit entgegenzuwirken batu|wie gehen wir mit dem anderen geschlecht um)/i.test(t)) {
+    // HELLBLAU (Vorträge & Rezitationen)
+    if (/(koranrezitation|kuran tilaveti|vortrag|konferans|rechtsschulen|dort mezhep|sira|siyer|beweise des islams|islamin delilleri|fiqh|fikih|wer ist al amin|el emin kimdir|karriere als muslim|musluman olarak kariyer|wege der ungerechtigkeit entgegenzuwirken batu|haksizlik.*karsi.*koyma.*yollar.*(batu)?|wie gehen wir mit dem anderen geschlecht um|karsi cinsle nasil iletisim kurariz)/i.test(t)) {
       return "cell-blue";
     }
 
     // GRAU/WEISS (Mahlzeiten & Pausen)
-    if (/(mittagessen|abendessen|\bpause\b|kurze pause)/i.test(t)) return "cell-gray";
+    if (/(mittagessen|ogle yemegi|abendessen|aksam yemegi|\bpause\b|\bmola\b|kurze pause|kisa mola)/i.test(t)) {
+      return "cell-gray";
+    }
 
-    // ORANGE (reine Freizeit)
-    if (/\bfreizeit\b/i.test(t)) return "cell-orange";
+    // ORANGE (Freizeit)
+    if (/(\bfreizeit\b|serbest zaman)/i.test(t)) {
+      return "cell-orange";
+    }
 
-    // GRÜN (Freizeitaktivitäten)
-    if (/(gemeinsames.*ilahi|wanderung|stadtbesichtigung|soccerhalle|workshop|gemeinsames.*(kuran|koran)\s*lesen)/i.test(t)) {
+    // GRÜN (Aktivitäten)
+    if (/(gemeinsames.*ilahi|birlikte.*ilahi|wanderung|yuruyus|stadtbesichtigung|sehir turu|soccerhalle|hali saha|workshop|atolye|gemeinsames.*(kuran|koran).*lesen|birlikte.*(kuran|koran).*okuma)/i.test(t)) {
       return "cell-green";
     }
 
-    // Fallback: nichts
     return "";
   }
 
@@ -216,7 +163,7 @@ function closeModal() {
   days.forEach(d => {
     const th = document.createElement("th");
     th.textContent = d;
-    th.classList.add(`col-${d.toLowerCase()}`); // Spaltenklasse
+    th.classList.add(`col-${daySlug(d)}`); // Spaltenklasse (slug)
     headRow.appendChild(th);
   });
   thead.appendChild(headRow);
@@ -248,7 +195,7 @@ function closeModal() {
       if (run === -1) return; // innerhalb eines Blocks -> keine Zelle rendern
 
       const td = document.createElement("td");
-      td.classList.add(`col-${day.toLowerCase()}`); // Spaltenklasse
+      td.classList.add(`col-${daySlug(day)}`); // Spaltenklasse (slug)
 
       if (run > 1) td.rowSpan = run; // vertikal zusammenfassen
 
@@ -276,7 +223,7 @@ function closeModal() {
           td.appendChild(meta);
         }
 
-        // ---- Klick für Modal aktivieren ----
+        // Klick für Modal (falls genutzt)
         td.classList.add("is-clickable");
         td.tabIndex = 0;
         const prayerText = data.prayerTimes ? data.prayerTimes[slot] : "";
@@ -292,8 +239,7 @@ function closeModal() {
         td.addEventListener("keydown", (ev) => {
           if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(); }
         });
-
-      } // sonst leer lassen
+      }
 
       tr.appendChild(td);
     });
