@@ -38,7 +38,9 @@ async function openTurkishPopup() {
     const trData = await res.json();
 
     // Modal öffnen + HTML einsetzen
-    openModal({ title: "Türkçe Program" });
+    // in openTurkishPopup() NACH dem Laden der TR-Daten:
+openModal({ title: "Türkçe Program", size: "full" });
+
     const body = document.getElementById("modal-body");
     body.innerHTML = renderSimpleTableHTML(trData) +
       `<div style="margin-top:12px;">
@@ -61,34 +63,52 @@ if (trBtn) trBtn.addEventListener("click", openTurkishPopup);
   const modalBody  = document.getElementById("modal-body");
   const modalClose = document.getElementById("modal-close");
 
-  function openModal({ title, day, slot, room, note, prayer }) {
-    if (!backdrop) return; // falls kein Modal-Markup existiert
-    modalTitle.textContent = title && title.trim() ? title.trim() : "Details";
+  const modalEl = document.querySelector("#modal-backdrop .modal");
 
-    // Body-Inhalt sicher aufbauen
-    modalBody.innerHTML = "";
-    const addRow = (label, value) => {
-      if (!value) return;
-      const row = document.createElement("div");
-      const strong = document.createElement("strong");
-      strong.textContent = label + ": ";
-      const span = document.createElement("span");
-      span.textContent = value;
-      row.appendChild(strong);
-      row.appendChild(span);
-      modalBody.appendChild(row);
-    };
-    addRow("Tag", day);
-    addRow("Zeit", slot);
-    addRow("Gebet", prayer);
-    addRow("Raum", room && room.trim());
-    addRow("Notiz", note && note.trim());
+function setModalSize(preset = "md") {
+  if (!modalEl) return;
+  modalEl.classList.remove("modal--full");   // weitere Presets könntest du hier ebenfalls entfernen
+  if (preset === "full") modalEl.classList.add("modal--full");
+}
 
-    backdrop.classList.add("open");
-    backdrop.setAttribute("aria-hidden", "false");
-    document.addEventListener("keydown", escToClose);
-    if (modalClose) modalClose.focus();
-  }
+
+  function openModal({ title, day, slot, room, note, prayer, size = "md" }) {
+  if (!backdrop) return;
+  setModalSize(size);
+  modalTitle.textContent = title && title.trim() ? title.trim() : "Details";
+
+  modalBody.innerHTML = "";
+  const addRow = (label, value) => {
+    if (!value) return;
+    const row = document.createElement("div");
+    const strong = document.createElement("strong");
+    strong.textContent = label + ": ";
+    const span = document.createElement("span");
+    span.textContent = value;
+    row.appendChild(strong);
+    row.appendChild(span);
+    modalBody.appendChild(row);
+  };
+  addRow("Tag", day);
+  addRow("Zeit", slot);
+  addRow("Gebet", prayer);
+  addRow("Raum", room && room?.trim());
+  addRow("Notiz", note && note?.trim());
+
+  document.body.classList.add("modal-open");
+  backdrop.classList.add("open");
+  backdrop.setAttribute("aria-hidden", "false");
+  document.addEventListener("keydown", escToClose);
+  if (modalClose) modalClose.focus();
+}
+function closeModal() {
+  if (!backdrop) return;
+  document.body.classList.remove("modal-open");
+  backdrop.classList.remove("open");
+  backdrop.setAttribute("aria-hidden", "true");
+  document.removeEventListener("keydown", escToClose);
+}
+
   function closeModal() {
     if (!backdrop) return;
     backdrop.classList.remove("open");

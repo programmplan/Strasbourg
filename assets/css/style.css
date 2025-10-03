@@ -67,26 +67,28 @@ h1 { margin:0 0 1rem; }
 /* Modal-Body mit Zeilenumbrüchen (falls Text/Notizen) */
 .modal-body { white-space: pre-wrap; }
 
-/* Modal resizable */
-.modal {
-  position: relative;
-  width: clamp(320px, 80vw, 900px);
-  max-height: 85vh;
-  overflow: auto;     /* nötig, sonst greift resize nicht */
-  resize: both;       /* Ecken ziehen: horizontal + vertikal */
+/* Vollbild-Modal mit fixiertem Header */
+.modal--full {
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  border-radius: 0;
+  margin: 0;
+  box-shadow: none;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+.modal-header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+}
+.modal-body {
+  flex: 1;
+  overflow: auto;  /* Inhalt scrollt, Header bleibt stehen */
 }
 
-/* kleine Griff-Markierung */
-.modal::after {
-  content: "";
-  position: absolute; right: 10px; bottom: 10px;
-  width: 14px; height: 14px;
-  border-right: 2px solid #cbd5e1;
-  border-bottom: 2px solid #cbd5e1;
-  pointer-events: none;
-}
-
-/* auf sehr kleinen Screens: nur vertikal resizen */
-@media (max-width: 640px) {
-  .modal { width: 95vw; resize: vertical; }
-}
+/* Optional: Seite hinten nicht scrollen, wenn offen */
+body.modal-open { overflow: hidden; }
