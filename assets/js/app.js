@@ -8,8 +8,102 @@
 
   last.textContent = `Stand: ${data.lastUpdated}`;
 
+  // ---- Türkisch-Popup Button ----
+const trBtn = document.getElementById("btn-tr");
+
+// Hilfsrenderer: einfache Tabelle ohne Merges (nur fürs Popup)
+function renderSimpleTableHTML(d) {
+  let html = '<table class="table"><thead><tr><th>Zaman</th>';
+  d.weekdays.forEach(w => { html += `<th>${w}</th>`; });
+  html += '</tr></thead><tbody>';
+
+  d.timeslots.forEach(slot => {
+    html += `<tr><td>${slot}</td>`;
+    d.weekdays.forEach(day => {
+      const e = d.entries.find(x => x.day === day && x.slot === slot);
+      html += `<td>${e && e.title ? `<strong>${e.title}</strong>` : ""}</td>`;
+    });
+    html += '</tr>';
+  });
+
+  html += '</tbody></table>';
+  return html;
+}
+
+async function openTurkishPopup() {
+  try {
+    // Türkische Version laden (siehe Ordnerstruktur unten)
+    const res = await fetch("./tr/data/schedule.json?v=" + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error("TR schedule nicht gefunden");
+    const trData = await res.json();
+
+    // Modal öffnen + HTML einsetzen
+    openModal({ title: "Türkçe Program" });
+    const body = document.getElementById("modal-body");
+    body.innerHTML = renderSimpleTableHTML(trData) +
+      `<div style="margin-top:12px;">
+         <a class="btn" href="tr/">Vollständige türkische Seite →</a>
+       </div>`;
+  } catch (e) {
+    openModal({ title: "Türkçe Program", note: "Türkische Daten nicht gefunden." });
+  }
+}
+
+if (trBtn) trBtn.addEventListener("click", openTurkishPopup);
+
+
   const timeslots = data.timeslots;
   const days = data.weekdays;
+
+  // ----- Modal-Helper (Popup) -----
+  const backdrop   = document.getElementById("modal-backdrop");
+  const modalTitle = document.getElementById("modal-title");
+  const modalBody  = document.getElementById("modal-body");
+  const modalClose = document.getElementById("modal-close");
+
+  function openModal({ title, day, slot, room, note, prayer }) {
+    if (!backdrop) return; // falls kein Modal-Markup existiert
+    modalTitle.textContent = title && title.trim() ? title.trim() : "Details";
+
+    // Body-Inhalt sicher aufbauen
+    modalBody.innerHTML = "";
+    const addRow = (label, value) => {
+      if (!value) return;
+      const row = document.createElement("div");
+      const strong = document.createElement("strong");
+      strong.textContent = label + ": ";
+      const span = document.createElement("span");
+      span.textContent = value;
+      row.appendChild(strong);
+      row.appendChild(span);
+      modalBody.appendChild(row);
+    };
+    addRow("Tag", day);
+    addRow("Zeit", slot);
+    addRow("Gebet", prayer);
+    addRow("Raum", room && room.trim());
+    addRow("Notiz", note && note.trim());
+
+    backdrop.classList.add("open");
+    backdrop.setAttribute("aria-hidden", "false");
+    document.addEventListener("keydown", escToClose);
+    if (modalClose) modalClose.focus();
+  }
+  function closeModal() {
+    if (!backdrop) return;
+    backdrop.classList.remove("open");
+    backdrop.setAttribute("aria-hidden", "true");
+    document.removeEventListener("keydown", escToClose);
+  }
+  function escToClose(e) {
+    if (e.key === "Escape") closeModal();
+  }
+  if (backdrop) {
+    backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
+  }
+  if (modalClose) {
+    modalClose.addEventListener("click", closeModal);
+  }
 
   // ----- Helfer -----
   const norm = (s) => (s || "")
@@ -161,6 +255,24 @@
           meta.innerHTML = metaParts.join(" · ");
           td.appendChild(meta);
         }
+
+        // ---- Klick für Modal aktivieren ----
+        td.classList.add("is-clickable");
+        td.tabIndex = 0;
+        const prayerText = data.prayerTimes ? data.prayerTimes[slot] : "";
+        const open = () => openModal({
+          title: entry.title,
+          day,
+          slot,
+          room: entry.room,
+          note: entry.note,
+          prayer: prayerText
+        });
+        td.addEventListener("click", open);
+        td.addEventListener("keydown", (ev) => {
+          if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(); }
+        });
+
       } // sonst leer lassen
 
       tr.appendChild(td);

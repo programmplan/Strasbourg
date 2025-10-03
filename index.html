@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="app-version" content="2025-09-29-5" />
+  <meta name="app-version" content="2025-09-29-6" />
   <title>Programmplan 20.12.2025 - 24.12.2025</title>
   <link rel="icon" href="assets/img/favicon.png" />
 
@@ -27,9 +27,26 @@
 </head>
 <body>
   <main class="container">
-    <h1>Programmplan</h1>
+    <div class="header-bar">
+      <h1>Programmplan</h1>
+
+      <!-- Button öffnet türkisches Popup; im Popup gibt’s Link zur TR-Seite -->
+      <button id="btn-tr" class="btn">Türkçe</button>
+    </div>
+
     <div id="last-updated"></div>
     <div id="timetable"></div>
   </main>
+
+  <!-- Modal Popup -->
+  <div id="modal-backdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <header class="modal-header">
+        <h2 id="modal-title">Details</h2>
+        <button id="modal-close" class="modal-close" aria-label="Popup schließen">×</button>
+      </header>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
 </body>
 </html>
