@@ -86,37 +86,47 @@
   };
 
   // FARBREGELN (Titel -> Klasse)  DE + TR
-  function colorClassFor(titleRaw) {
-    const t = norm(titleRaw);
-    if (!t || isEmptyTitle(t)) return "";
+// FARBREGELN (Titel -> Klasse)  DE + TR
+function colorClassFor(titleRaw) {
+  const t = norm(titleRaw);
+  if (!t || isEmptyTitle(t)) return "";
 
-    // GOLD (Abfahrt/Check-in + Abschluss)
-    if (/(abfahrt.*fajr|einchecken|check ?in|sabah.*fecir.*hareket|varis.*check ?in|kapanis quiz.*(vedalas|degerlendirme|ausblick)?)/i.test(t)) {
-      return "cell-gold";
-    }
-
-    // HELLBLAU (Vorträge & Rezitationen)
-    if (/(koranrezitation|kuran tilaveti|vortrag|konferans|rechtsschulen|dort mezhep|sira|siyer|beweise des islams|islamin delilleri|fiqh|fikih|wer ist al amin|el emin kimdir|karriere als muslim|musluman olarak kariyer|wege der ungerechtigkeit entgegenzuwirken batu|haksizlik.*karsi.*koyma.*yollar.*(batu)?|wie gehen wir mit dem anderen geschlecht um|karsi cinsle nasil iletisim kurariz)/i.test(t)) {
-      return "cell-blue";
-    }
-
-    // GRAU/WEISS (Mahlzeiten & Pausen)
-    if (/(mittagessen|ogle yemegi|abendessen|aksam yemegi|\bpause\b|\bmola\b|kurze pause|kisa mola)/i.test(t)) {
-      return "cell-gray";
-    }
-
-    // ORANGE (Freizeit)
-    if (/(\bfreizeit\b|serbest zaman)/i.test(t)) {
-      return "cell-orange";
-    }
-
-    // GRÜN (Aktivitäten)
-    if (/(gemeinsames.*ilahi|birlikte.*ilahi|wanderung|yuruyus|stadtbesichtigung|sehir turu|soccerhalle|hali saha|workshop|atolye|gemeinsames.*(kuran|koran).*lesen|birlikte.*(kuran|koran).*okuma)/i.test(t)) {
-      return "cell-green";
-    }
-
-    return "";
+  // GOLD (Abfahrt/Check-in + Abschluss)
+  if (/(abfahrt.*fajr|einchecken|check ?in|sabah.*fecir.*hareket|varis.*check ?in|kapanis quiz.*(vedalas|degerlendirme|ausblick)?)/i.test(t)) {
+    return "cell-gold";
   }
+
+  // SPEZIELLER MATCH für:
+  // - "Wege der (Un)Gerechtigkeit entgegenzuwirken (Batu)"
+  // - "Haksızlığa karşı koyma yolları (Batu)"
+  //   (nach Normalisierung: haksizliga / haksizlik ... karsi ... koyma ... yollar)
+  if (/(wege.*(un)?gerechtigkeit.*entgegenzuwirken(\s*batu)?|haksizl\w*.*karsi.*koyma.*yollar\w*(\s*batu)?)/i.test(t)) {
+    return "cell-blue";
+  }
+
+  // HELLBLAU (Vorträge & Rezitationen allgemein)
+  if (/(koranrezitation|kuran tilaveti|vortrag|konferans|rechtsschulen|dort mezhep|sira|siyer|beweise des islams|islamin delilleri|fiqh|fikih|wer ist al amin|el emin kimdir|karriere als muslim|musluman olarak kariyer|wie gehen wir mit dem anderen geschlecht um)/i.test(t)) {
+    return "cell-blue";
+  }
+
+  // GRAU/WEISS (Mahlzeiten & Pausen)
+  if (/(mittagessen|ogle yemegi|abendessen|aksam yemegi|\bpause\b|\bmola\b|kurze pause|kisa mola)/i.test(t)) {
+    return "cell-gray";
+  }
+
+  // ORANGE (Freizeit)
+  if (/(\bfreizeit\b|serbest zaman)/i.test(t)) {
+    return "cell-orange";
+  }
+
+  // GRÜN (Aktivitäten)
+  if (/(gemeinsames.*ilahi|birlikte.*ilahi|wanderung|yuruyus|stadtbesichtigung|sehir turu|soccerhalle|hali saha|workshop|atolye|gemeinsames.*(kuran|koran).*lesen|birlikte.*(kuran|koran).*okuma)/i.test(t)) {
+    return "cell-green";
+  }
+
+  return "";
+}
+
 
   const findEntry = (day, slot) => data.entries.find(e => e.day === day && e.slot === slot);
 
