@@ -117,7 +117,7 @@
     { "day": "Salı", "slot": "12:00-12:30", "title": "Öğle yemeği" },
     { "day": "Salı", "slot": "12:30-13:00", "title": "Öğle yemeği" },
     { "day": "Salı", "slot": "13:00-13:30", "title": "Kısa mola" },
-    { "day": "Salı", "slot": "13:30-14:00", "title": "Haksızlığa karşı koyma yolları (Batu)" },
+    { "day": "Salı", "slot": "13:30-14:00", "title": "Haksızlığa karşı koyma yolları" },
     { "day": "Salı", "slot": "14:00-14:30", "title": "" },
     { "day": "Salı", "slot": "14:30-15:00", "title": "Atölye" },
     { "day": "Salı", "slot": "15:00-15:30", "title": "Atölye" },
@@ -158,5 +158,5 @@
     { "day": "Çarşamba", "slot": "20:00-20:30", "title": "" },
     { "day": "Çarşamba", "slot": "20:30-21:00", "title": "" }
   ],
-  "lastUpdated": "2025-10-04, 01:58"
+  "lastUpdated": "2025-10-04, 02:08"
 }

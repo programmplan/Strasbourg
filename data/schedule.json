@@ -122,7 +122,7 @@
     { "day": "Di", "slot": "12:00-12:30", "title": "Mittagessen"},
     { "day": "Di", "slot": "12:30-13:00", "title": "Mittagessen"},
     { "day": "Di", "slot": "13:00-13:30", "title": "Kurze Pause"},
-    { "day": "Di", "slot": "13:30-14:00", "title": " 'Wege, der Ungerechtigkeit entgegenzuwirken (Batu)' "},
+    { "day": "Di", "slot": "13:30-14:00", "title": " 'Wege, der Ungerechtigkeit entgegenzuwirken' "},
     { "day": "Di", "slot": "14:00-14:30", "title": ""},
     { "day": "Di", "slot": "14:30-15:00", "title": "Workshop"},
     { "day": "Di", "slot": "15:00-15:30", "title": "Workshop"},
@@ -163,5 +163,5 @@
     { "day": "Mi", "slot": "20:00-20:30", "title": ""},
     { "day": "Mi", "slot": "20:30-21:00", "title": ""}
   ],
-  "lastUpdated": "2025-10-04, 01:58 Uhr"
+  "lastUpdated": "2025-10-04, 02:08 Uhr"
 }
