@@ -2,16 +2,18 @@
   const container = document.getElementById("timetable");
   const last = document.getElementById("last-updated");
 
-  // schedule.json lesen (Cache-Bust)
+  // ---- Daten laden (Cache-Bust) ----
   const res = await fetch("./data/schedule.json?v=" + Date.now(), { cache: "no-store" });
   const data = await res.json();
 
   last.textContent = `Stand: ${data.lastUpdated}`;
 
-  const timeslots = data.timeslots;
-  const days = data.weekdays;
+  const timeslots = data.timeslots || [];
+  const days = data.weekdays || [];
 
-  // ----- Modal-Helper (Popup) -----
+  // -------------------------------------------------
+  // Modal-Helfer (Popup für Zellen-Details – optional)
+  // -------------------------------------------------
   const backdrop   = document.getElementById("modal-backdrop");
   const modalTitle = document.getElementById("modal-title");
   const modalBody  = document.getElementById("modal-body");
@@ -25,9 +27,9 @@
   }
 
   function openModal({ title, day, slot, room, note, prayer, size = "md" }) {
-    if (!backdrop) return;
+    if (!backdrop) return; // Wenn kein Modal in der Seite ist, einfach nichts tun
     setModalSize(size);
-    modalTitle.textContent = title && title.trim() ? title.trim() : "Details";
+    modalTitle.textContent = title && String(title).trim() ? String(title).trim() : "Details";
 
     modalBody.innerHTML = "";
     const addRow = (label, value) => {
@@ -44,8 +46,8 @@
     addRow("Tag", day);
     addRow("Zeit", slot);
     addRow("Gebet", prayer);
-    addRow("Raum", room && room?.trim());
-    addRow("Notiz", note && note?.trim());
+    addRow("Raum", room && String(room).trim());
+    addRow("Notiz", note && String(note).trim());
 
     document.body.classList.add("modal-open");
     backdrop.classList.add("open");
@@ -64,73 +66,96 @@
   if (backdrop) backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
   if (modalClose) modalClose.addEventListener("click", closeModal);
 
-  // ----- Helfer -----
-  // Türkische Sonderzeichen -> ASCII, dann normalisieren
+  // ---------------------------
+  // Normalisierung & Keys
+  // ---------------------------
+  // Türkische Sonderzeichen -> ASCII und generelle Bereinigung
   const TR_MAP = { "ç":"c", "ğ":"g", "ı":"i", "ö":"o", "ş":"s", "ü":"u" };
-  const norm = (s) => (s || "")
+  const norm = (s) => (s ?? "")
     .toString()
     .toLowerCase()
-    .replace(/[çğışöü]/g, ch => TR_MAP[ch])   // TR letters
+    .replace(/[çğışöü]/g, ch => TR_MAP[ch])    // TR Zeichen ersetzen
     .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")         // Diakritika
-    .replace(/[’'“”"()?\-–,.:;!]/g, "")      // Interpunkt.
+    .replace(/[\u0300-\u036f]/g, "")          // Diakritika entfernen
+    .replace(/[’'“”"()?\-–,.:;!]/g, " ")      // Interpunktion -> Leerzeichen
     .replace(/\s+/g, " ")
     .trim();
 
-  // Slug für Spaltenklassen (funktioniert für DE & TR)
-  const daySlug = (s) => norm(s).replace(/\s+/g, "-");
+  // Sprach-/format-unabhängiger Day-Key (DE/TR, mit/ohne Datum)
+  // Mapped alles auf: sat, sun, mon, tue, wed
+  function dayKey(s) {
+    const n = norm(s || "");
+    // Falls "Sa, 20.12.2025" → nur Teil vor erstem Komma/Datum nehmen
+    const first = n.split(" ")[0]; // nach Norm sind Kommas entfernt → Datum steht als eigener Token, wir nehmen den 1. Token
+    // Deutsche Varianten (abgekürzt & ausgeschrieben)
+    if (/^(sa|samstag)$/.test(first)) return "sat";
+    if (/^(so|sonntag)$/.test(first)) return "sun";
+    if (/^(mo|montag)$/.test(first)) return "mon";
+    if (/^(di|dienstag)$/.test(first)) return "tue";
+    if (/^(mi|mittwoch)$/.test(first)) return "wed";
+    // Türkische Varianten
+    if (/^(cumartesi)$/.test(first)) return "sat";
+    if (/^(pazar)$/.test(first)) return "sun";
+    if (/^(pazartesi)$/.test(first)) return "mon";
+    if (/^(sali)$/.test(first)) return "tue";       // Salı
+    if (/^(carsamba)$/.test(first)) return "wed";   // Çarşamba
+    return first || n; // Fallback
+  }
 
+  // Für CSS-Spaltenklasse stabil (gleich für DE & TR & mit Datum)
+  const colClass = (d) => `col-${dayKey(d)}`;
+
+  const isEmpty = (x) => !x || !String(x).trim();
   const isEmptyTitle = (t) => {
     const n = norm(t);
     return !n || n === "-" || n === "";
   };
 
-  // FARBREGELN (Titel -> Klasse)  DE + TR
-// FARBREGELN (Titel -> Klasse)  DE + TR
-function colorClassFor(titleRaw) {
-  const t = norm(titleRaw);
-  if (!t || isEmptyTitle(t)) return "";
+  // -----------------------------------------
+  // Farben / Kategorien (DE + TR Begriffe)
+  // -----------------------------------------
+  function colorClassFor(titleRaw) {
+    const t = norm(titleRaw);
+    if (!t || isEmptyTitle(t)) return "";
 
-  // GOLD (Abfahrt/Check-in + Abschluss)
-  if (/(abfahrt.*fajr|einchecken|check ?in|sabah.*fecir.*hareket|varis.*check ?in|kapanis quiz.*(vedalas|degerlendirme|ausblick)?)/i.test(t)) {
-    return "cell-gold";
+    // GOLD (Abfahrt/Check-in + Abschluss)
+    if (/(abfahrt.*fajr|einchecken|check ?in|sabah.*fecir.*hareket|varis.*check ?in|kapanis quiz.*(vedalas|degerlendirme|ausblick)?)/i.test(t)) {
+      return "cell-gold";
+    }
+
+    // SPEZIFISCH: Wege der (Un)Gerechtigkeit / Haksızlığa karşı koyma yolları
+    if (/(wege.*(un)?gerechtigkeit.*entgegenzuwirken(\s*batu)?|haksizl\w*.*karsi.*koyma.*yollar\w*(\s*batu)?)/i.test(t)) {
+      return "cell-blue";
+    }
+
+    // HELLBLAU (Vorträge & Rezitationen allgemein)
+    if (/(koranrezitation|kuran tilaveti|vortrag|konferans|rechtsschulen|dort mezhep|sira|siyer|beweise des islams|islamin delilleri|fiqh|fikih|wer ist al amin|el emin kimdir|karriere als muslim|musluman olarak kariyer|wie gehen wir mit dem anderen geschlecht um|karsi cinsle nasil iletisim kurariz)/i.test(t)) {
+      return "cell-blue";
+    }
+
+    // GRAU/WEISS (Mahlzeiten & Pausen)
+    if (/(mittagessen|ogle yemegi|abendessen|aksam yemegi|\bpause\b|\bmola\b|kurze pause|kisa mola)/i.test(t)) {
+      return "cell-gray";
+    }
+
+    // ORANGE (Freizeit)
+    if (/(\bfreizeit\b|serbest zaman)/i.test(t)) {
+      return "cell-orange";
+    }
+
+    // GRÜN (Aktivitäten)
+    if (/(gemeinsames.*ilahi|birlikte.*ilahi|wanderung|yuruyus|stadtbesichtigung|sehir turu|soccerhalle|hali saha|workshop|atolye|gemeinsames.*(kuran|koran).*lesen|birlikte.*(kuran|koran).*okuma)/i.test(t)) {
+      return "cell-green";
+    }
+
+    return "";
   }
 
-  // SPEZIELLER MATCH für:
-  // - "Wege der (Un)Gerechtigkeit entgegenzuwirken (Batu)"
-  // - "Haksızlığa karşı koyma yolları (Batu)"
-  //   (nach Normalisierung: haksizliga / haksizlik ... karsi ... koyma ... yollar)
-  if (/(wege.*(un)?gerechtigkeit.*entgegenzuwirken(\s*batu)?|haksizl\w*.*karsi.*koyma.*yollar\w*(\s*batu)?)/i.test(t)) {
-    return "cell-blue";
-  }
-
-  // HELLBLAU (Vorträge & Rezitationen allgemein)
-  if (/(koranrezitation|kuran tilaveti|vortrag|konferans|rechtsschulen|dort mezhep|sira|siyer|beweise des islams|islamin delilleri|fiqh|fikih|wer ist al amin|el emin kimdir|karriere als muslim|musluman olarak kariyer|wie gehen wir mit dem anderen geschlecht um)/i.test(t)) {
-    return "cell-blue";
-  }
-
-  // GRAU/WEISS (Mahlzeiten & Pausen)
-  if (/(mittagessen|ogle yemegi|abendessen|aksam yemegi|\bpause\b|\bmola\b|kurze pause|kisa mola)/i.test(t)) {
-    return "cell-gray";
-  }
-
-  // ORANGE (Freizeit)
-  if (/(\bfreizeit\b|serbest zaman)/i.test(t)) {
-    return "cell-orange";
-  }
-
-  // GRÜN (Aktivitäten)
-  if (/(gemeinsames.*ilahi|birlikte.*ilahi|wanderung|yuruyus|stadtbesichtigung|sehir turu|soccerhalle|hali saha|workshop|atolye|gemeinsames.*(kuran|koran).*lesen|birlikte.*(kuran|koran).*okuma)/i.test(t)) {
-    return "cell-green";
-  }
-
-  return "";
-}
-
-
+  // -----------------------------------------
+  // Daten-Zugriff
+  // -----------------------------------------
   const findEntry = (day, slot) =>
-  data.entries.find(e => daySlug(e.day) === daySlug(day) && e.slot === slot);
-
+    (data.entries || []).find(e => dayKey(e.day) === dayKey(day) && e.slot === slot);
 
   // gleiche Einträge mergen (nur nicht-leere)
   const signature = (e) => {
@@ -141,7 +166,7 @@ function colorClassFor(titleRaw) {
     return `${t}|${r}|${n}`;
   };
 
-  // Runs je Tag vorberechnen
+  // Runs je Tag vorberechnen (für Rowspan)
   const runs = {};
   days.forEach(day => {
     const arr = new Array(timeslots.length).fill(0);
@@ -163,7 +188,9 @@ function colorClassFor(titleRaw) {
     runs[day] = arr;
   });
 
-  // Tabelle bauen
+  // -----------------------
+  // Tabelle rendern
+  // -----------------------
   const table = document.createElement("table");
   table.className = "table";
 
@@ -175,7 +202,7 @@ function colorClassFor(titleRaw) {
   days.forEach(d => {
     const th = document.createElement("th");
     th.textContent = d;
-    th.classList.add(`col-${daySlug(d)}`); // Spaltenklasse (slug)
+    th.classList.add(colClass(d)); // stabile Spaltenklasse
     headRow.appendChild(th);
   });
   thead.appendChild(headRow);
@@ -185,15 +212,15 @@ function colorClassFor(titleRaw) {
   timeslots.forEach((slot, rowIdx) => {
     const tr = document.createElement("tr");
 
-    // Zeitspalte
+    // Zeit
     const timeCell = document.createElement("td");
     timeCell.textContent = slot;
     tr.appendChild(timeCell);
 
-    // Gebetszeiten-Spalte (leer wenn nichts)
+    // Gebetszeiten (nur anzeigen, wenn vorhanden)
     const prayerCell = document.createElement("td");
     const prayer = data.prayerTimes ? data.prayerTimes[slot] : "";
-    if (prayer) {
+    if (!isEmpty(prayer)) {
       const badge = document.createElement("span");
       badge.className = "badge";
       badge.textContent = prayer;
@@ -201,57 +228,60 @@ function colorClassFor(titleRaw) {
     }
     tr.appendChild(prayerCell);
 
-    // Tagesspalten mit Rowspan-Merge + Farblogik
+    // Tagesspalten
     days.forEach(day => {
       const run = runs[day][rowIdx];
-      if (run === -1) return; // innerhalb eines Blocks -> keine Zelle rendern
+      if (run === -1) return; // innerhalb eines Merges → keine zusätzliche Zelle
 
       const td = document.createElement("td");
-      td.classList.add(`col-${daySlug(day)}`); // Spaltenklasse (slug)
+      td.classList.add(colClass(day)); // stabile Spaltenklasse
 
-      if (run > 1) td.rowSpan = run; // vertikal zusammenfassen
+      if (run > 1) td.rowSpan = run;
 
       const entry = findEntry(day, slot);
 
       if (entry && signature(entry)) {
-        // Farbe vergeben (nach Titel)
+        // Farbe vergeben
         const cls = colorClassFor(entry.title);
         if (cls) td.classList.add(cls);
 
-        // Titel
+        // Titel (nur wenn nicht leer)
         if (!isEmptyTitle(entry.title)) {
-          const title = document.createElement("div");
-          title.innerHTML = `<strong>${entry.title.trim()}</strong>`;
-          td.appendChild(title);
+          const titleEl = document.createElement("div");
+          titleEl.innerHTML = `<strong>${String(entry.title).trim()}</strong>`;
+          td.appendChild(titleEl);
         }
 
-        // Meta (nur wenn vorhanden)
+        // Meta (Raum/Notiz) nur wenn vorhanden
         const metaParts = [];
-        if (!isEmptyTitle(entry.room)) metaParts.push(`<span class="badge">${entry.room.trim()}</span>`);
-        if (!isEmptyTitle(entry.note)) metaParts.push(entry.note.trim());
+        if (!isEmpty(entry.room)) metaParts.push(`<span class="badge">${String(entry.room).trim()}</span>`);
+        if (!isEmpty(entry.note)) metaParts.push(String(entry.note).trim());
         if (metaParts.length) {
           const meta = document.createElement("div");
           meta.innerHTML = metaParts.join(" · ");
           td.appendChild(meta);
         }
 
-        // Klick für Modal (falls genutzt)
-        td.classList.add("is-clickable");
-        td.tabIndex = 0;
-        const prayerText = data.prayerTimes ? data.prayerTimes[slot] : "";
-        const open = () => openModal({
-          title: entry.title,
-          day,
-          slot,
-          room: entry.room,
-          note: entry.note,
-          prayer: prayerText
-        });
-        td.addEventListener("click", open);
-        td.addEventListener("keydown", (ev) => {
-          if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(); }
-        });
+        // Optional: Klick → Modal öffnen
+        if (backdrop) {
+          td.classList.add("is-clickable");
+          td.tabIndex = 0;
+          const prayerText = data.prayerTimes ? data.prayerTimes[slot] : "";
+          const open = () => openModal({
+            title: entry.title,
+            day,
+            slot,
+            room: entry.room,
+            note: entry.note,
+            prayer: prayerText
+          });
+          td.addEventListener("click", open);
+          td.addEventListener("keydown", (ev) => {
+            if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(); }
+          });
+        }
       }
+      // else: Zelle bleibt leer (kein "—")
 
       tr.appendChild(td);
     });
