@@ -1,5 +1,5 @@
 {
-  "weekdays": ["Sa", "So", "Mo", "Di", "Mi"],
+  "weekdays": ["Sa, 20.12.2025", "So, 21.12.2025", "Mo, 22.12.2025", "Di, 23.12.2025", "Mi, 24.12.2025"],
   "timeslots": [
     "08:00",
     "09:00",
@@ -117,8 +117,8 @@
     { "day": "Di", "slot": "09:00", "title": " 'Die 4 Rechtsschulen' "},
     { "day": "Di", "slot": "10:00-10:30", "title": " 'Die 4 Rechtsschulen' "},
     { "day": "Di", "slot": "10:30-11:00", "title": "Pause"},
-    { "day": "Di", "slot": "11:00-11:30", "title": " 'Allday Fiqh' "},
-    { "day": "Di", "slot": "11:30-12:00", "title": " 'Allday Fiqh' "},
+    { "day": "Di", "slot": "11:00-11:30", "title": " 'Everyday Fiqh' "},
+    { "day": "Di", "slot": "11:30-12:00", "title": " 'Everyday Fiqh' "},
     { "day": "Di", "slot": "12:00-12:30", "title": "Mittagessen"},
     { "day": "Di", "slot": "12:30-13:00", "title": "Mittagessen"},
     { "day": "Di", "slot": "13:00-13:30", "title": "Kurze Pause"},
