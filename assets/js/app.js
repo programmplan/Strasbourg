@@ -128,7 +128,9 @@ function colorClassFor(titleRaw) {
 }
 
 
-  const findEntry = (day, slot) => data.entries.find(e => e.day === day && e.slot === slot);
+  const findEntry = (day, slot) =>
+  data.entries.find(e => daySlug(e.day) === daySlug(day) && e.slot === slot);
+
 
   // gleiche Einträge mergen (nur nicht-leere)
   const signature = (e) => {
