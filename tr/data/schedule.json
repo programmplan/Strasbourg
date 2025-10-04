@@ -1,5 +1,6 @@
 {
-  "weekdays": ["Cumartesi, 20.12.2025", "Pazar, 21.12.2025", "Pazartesi, 22.12.2025", "Salı, 23.12.2025", "Çarşamba, 24.12.2025"],
+  "weekdays": ["Cumartesi", "Pazar", "Pazartesi", "Salı", "Çarşamba"],
+
   "timeslots": [
     "08:00",
     "09:00",
