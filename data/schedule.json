@@ -1,5 +1,5 @@
 {
-  "weekdays": ["Sa, 20.12.2025", "So, 21.12.2025", "Mo, 22.12.2025", "Di, 23.12.2025", "Mi, 24.12.2025"],
+  "weekdays": ["Sa,     20.12.2025", "So, 21.12.2025", "Mo,     22.12.2025", "Di,        23.12.2025", "Mi, 24.12.2025"],
   "timeslots": [
     "08:00",
     "09:00",
@@ -96,7 +96,7 @@
     { "day": "Mo", "slot": "11:30-12:00", "title": "Wanderung"},
     { "day": "Mo", "slot": "12:00-12:30", "title": "Mittagessen"},
     { "day": "Mo", "slot": "12:30-13:00", "title": "Mittagessen"},
-    { "day": "Mo", "slot": "13:00-13:30", "title": ""},
+    { "day": "Mo", "slot": "13:00-13:30", "title": "Umrah 101"},
     { "day": "Mo", "slot": "13:30-14:00", "title": ""},
     { "day": "Mo", "slot": "14:00-14:30", "title": "Stadtbesichtigung"},
     { "day": "Mo", "slot": "14:30-15:00", "title": "Stadtbesichtigung"},
