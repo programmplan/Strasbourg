@@ -26,6 +26,26 @@
     if (preset === "full") modalEl.classList.add("modal--full");
   }
 
+  // "Sa, 20.12.2025" -> { day: "Sa", date: "20.12.2025" }
+function splitDayAndDate(s) {
+  const raw = String(s || "");
+  // 1) Wenn ein Komma drin ist, trenne daran
+  if (raw.includes(",")) {
+    const [day, ...rest] = raw.split(",");
+    return { day: day.trim(), date: rest.join(",").trim() };
+  }
+  // 2) Sonst Datum per Regex finden
+  const m = raw.match(/(\d{1,2}\.\d{1,2}\.\d{4})/);
+  if (m) {
+    const date = m[1];
+    const day = raw.replace(date, "").replace(",", "").trim();
+    return { day, date };
+  }
+  // 3) Fallback: nur Tag anzeigen
+  return { day: raw.trim(), date: "" };
+}
+
+
   function openModal({ title, day, slot, room, note, prayer, size = "md" }) {
     if (!backdrop) return; // Wenn kein Modal in der Seite ist, einfach nichts tun
     setModalSize(size);
@@ -194,18 +214,22 @@
   const table = document.createElement("table");
   table.className = "table";
 
-  // Kopfzeile
-  const thead = document.createElement("thead");
-  const headRow = document.createElement("tr");
-  headRow.appendChild(document.createElement("th")).textContent = "Zeit";
-  headRow.appendChild(document.createElement("th")).textContent = "Gebetszeiten";
-  days.forEach(d => {
-    const th = document.createElement("th");
-    th.textContent = d;
-    th.classList.add(colClass(d)); // stabile Spaltenklasse
-    headRow.appendChild(th);
-  });
-  thead.appendChild(headRow);
+// Kopfzeile
+const thead = document.createElement("thead");
+const headRow = document.createElement("tr");
+headRow.appendChild(document.createElement("th")).textContent = "Zeit";
+headRow.appendChild(document.createElement("th")).textContent = "Gebetszeiten";
+
+days.forEach(d => {
+  const th = document.createElement("th");
+  const { day: wd, date } = splitDayAndDate(d);
+  th.innerHTML = `<div class="day-top">${wd}</div>${date ? `<div class="day-bottom">${date}</div>` : ""}`;
+  th.classList.add(colClass(d)); // deine bestehende Spaltenklasse
+  headRow.appendChild(th);
+});
+
+thead.appendChild(headRow);
+
 
   // Body
   const tbody = document.createElement("tbody");
