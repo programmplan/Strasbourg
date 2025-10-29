@@ -1,5 +1,5 @@
 {
-  "weekdays": ["Fr, ㅤ20.12.2025", "Sa, 21.12.2025", "So, ㅤ22.12.2025", "Mo, ㅤ23.12.2025", "Di, 24.12.2025"],
+  "weekdays": ["Fr, 19.12.2025", "Sa, 20.12.2025", "So, 21.12.2025", "Mo, 22.12.2025", "Di, 23.12.2025"],
   "timeslots": [
     "08:00",
     "09:00",
@@ -85,8 +85,8 @@
     { "day": "Sa", "slot": "17:30-18:00", "title": "Abendessen"},
     { "day": "Sa", "slot": "18:00-18:30", "title": ""},
     { "day": "Sa", "slot": "18:30-19:00", "title": ""},
-    { "day": "Sa", "slot": "19:00-19:30", "title": "JUNGS: GemeinSames Ilahi"},
-    { "day": "Sa", "slot": "19:30-20:00", "title": "JUNGS: GemeinSames Ilahi"},
+    { "day": "Sa", "slot": "19:00-19:30", "title": "JUNGS: Gemeinsames Ilahi"},
+    { "day": "Sa", "slot": "19:30-20:00", "title": "JUNGS: Gemeinsames Ilahi"},
     { "day": "Sa", "slot": "20:00-20:30", "title": ""},
     { "day": "Sa", "slot": "20:30-21:00", "title": ""},
 
@@ -112,8 +112,8 @@
     { "day": "So", "slot": "17:00-17:30", "title": "Pause"},
     { "day": "So", "slot": "17:30-18:00", "title": " 'Wie gehen wir mit dem anderen Geschlecht um?' "},
     { "day": "So", "slot": "18:00-18:30", "title": " 'Wie gehen wir mit dem anderen Geschlecht um?' "},
-    { "day": "So", "slot": "18:30-19:00", "title": "JUNGS: GemeinFrmes Kuran lesen"},
-    { "day": "So", "slot": "19:00-19:30", "title": "JUNGS: GemeinFrmes Kuran lesen"},
+    { "day": "So", "slot": "18:30-19:00", "title": "JUNGS: Gemeinsames Kuran lesen"},
+    { "day": "So", "slot": "19:00-19:30", "title": "JUNGS: Gemeinsames Kuran lesen"},
     { "day": "So", "slot": "19:30-20:00", "title": ""},
     { "day": "So", "slot": "20:00-20:30", "title": ""},
     { "day": "So", "slot": "20:30-21:00", "title": ""},
@@ -127,7 +127,7 @@
     { "day": "Mo", "slot": "12:00-12:30", "title": "Mittagessen"},
     { "day": "Mo", "slot": "12:30-13:00", "title": "Mittagessen"},
     { "day": "Mo", "slot": "13:00-13:30", "title": "Umrah 101"},
-    { "day": "Mo", "slot": "13:30-14:00", "title": ""},
+    { "day": "Mo", "slot": "13:30-14:00", "title": "Umrah 101"},
     { "day": "Mo", "slot": "14:00-14:30", "title": "Stadtbesichtigung"},
     { "day": "Mo", "slot": "14:30-15:00", "title": "Stadtbesichtigung"},
     { "day": "Mo", "slot": "15:00-15:30", "title": "Stadtbesichtigung"},
