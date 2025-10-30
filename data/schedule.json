@@ -73,13 +73,13 @@
     { "day": "Sa", "slot": "11:30-12:00", "title": "..."},
     { "day": "Sa", "slot": "12:00-12:30", "title": "Mittagessen"},
     { "day": "Sa", "slot": "12:30-13:00", "title": "Mittagessen"},
-    { "day": "Sa", "slot": "13:00-13:30", "title": " 'Lehren aus der Sira - 1' "},
-    { "day": "Sa", "slot": "13:30-14:00", "title": " 'Lehren aus der Sira - 1' "},
-    { "day": "Sa", "slot": "14:00-14:30", "title": " 'Lehren aus der Sira - 1' "},
+    { "day": "Sa", "slot": "13:00-13:30", "title": " 'Wer ist Al Amin?' "},
+    { "day": "Sa", "slot": "13:30-14:00", "title": " 'Wer ist Al Amin?' "},
+    { "day": "Sa", "slot": "14:00-14:30", "title": " 'Wer ist Al Amin?' "},
     { "day": "Sa", "slot": "14:30-15:00", "title": "Freizeit"},
     { "day": "Sa", "slot": "15:00-15:30", "title": "Freizeit"},
-    { "day": "Sa", "slot": "15:30-16:00", "title": ""},
-    { "day": "Sa", "slot": "16:00-16:30", "title": ""},
+    { "day": "Sa", "slot": "15:30-16:00", "title": " 'Lehren aus der Sira - 1' "},
+    { "day": "Sa", "slot": "16:00-16:30", "title": " 'Lehren aus der Sira - 1' "},
     { "day": "Sa", "slot": "16:30-17:00", "title": ""},
     { "day": "Sa", "slot": "17:00-17:30", "title": "Abendessen"},
     { "day": "Sa", "slot": "17:30-18:00", "title": "Abendessen"},
@@ -94,8 +94,8 @@
 
 
     { "day": "So", "slot": "08:00", "title": ""},
-    { "day": "So", "slot": "09:00", "title": " 'Wer ist Al Amin?' "},
-    { "day": "So", "slot": "10:00-10:30", "title": " 'Wer ist Al Amin?' "},
+    { "day": "So", "slot": "09:00", "title": " 'Everyday Fiqh' "},
+    { "day": "So", "slot": "10:00-10:30", "title": " 'Everyday Fiqh' "},
     { "day": "So", "slot": "10:30-11:00", "title": "Pause"},
     { "day": "So", "slot": "11:00-11:30", "title": " 'Everyday Fiqh' "},
     { "day": "So", "slot": "11:30-12:00", "title": " 'Everyday Fiqh' "},
@@ -170,5 +170,5 @@
     { "day": "Di", "slot": "20:00-20:30", "title": ""},
     { "day": "Di", "slot": "20:30-21:00", "title": ""}
   ],
-  "lastUpdated": "2025-10-04, 20:55 Uhr"
+  "lastUpdated": "2025-10-30, 15:59 Uhr"
 }
