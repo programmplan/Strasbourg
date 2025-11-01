@@ -94,8 +94,8 @@
 
 
     { "day": "So", "slot": "08:00", "title": ""},
-    { "day": "So", "slot": "09:00", "title": " 'Everyday Fiqh' "},
-    { "day": "So", "slot": "10:00-10:30", "title": " 'Everyday Fiqh' "},
+    { "day": "So", "slot": "09:00", "title": " 'Die 4 Rechtsschulen' "},
+    { "day": "So", "slot": "10:00-10:30", "title": " 'Die 4 Rechtsschulen' "},
     { "day": "So", "slot": "10:30-11:00", "title": "Pause"},
     { "day": "So", "slot": "11:00-11:30", "title": " 'Everyday Fiqh' "},
     { "day": "So", "slot": "11:30-12:00", "title": " 'Everyday Fiqh' "},
