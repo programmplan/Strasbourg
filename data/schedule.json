@@ -2,8 +2,8 @@
   "weekdays": ["Fr, 19.12.2025", "Sa, 20.12.2025", "So, 21.12.2025", "Mo, 22.12.2025", "Di, 23.12.2025"],
   "timeslots": [
     "08:00",
-    "09:00",
-    "09:00-10:00",
+    "09:00-09:30",
+    "09:30-10:00",
     "10:00-10:30",
     "10:30-11:00",
     "11:00-11:30",
@@ -68,14 +68,14 @@
 
 
     { "day": "Sa", "slot": "08:00", "title": "Frühstück"},
-    { "day": "Sa", "slot": "09:00", "title": "Koranrezitation + Begrüßung im Hörsaal" },
+    { "day": "Sa", "slot": "09:00-09:30", "title": "Koranrezitation + Begrüßung im Hörsaal" },
     { "day": "Sa", "slot": "09:30-10:00", "title": "Was ist Gerechtigkeit im Islam? (A. Celil Hoca)" },
     { "day": "Sa", "slot": "10:00-10:30", "title": "Was ist Gerechtigkeit im Islam? (A. Celil Hoca)" },
     { "day": "Sa", "slot": "10:30-11:00", "title": "Was ist Gerechtigkeit im Islam? (A. Celil Hoca)" },
     { "day": "Sa", "slot": "11:00-11:30", "title": "Ditib und die Bedeutung der institutionellen Zugehörigkeit (Br. Batu)" },
     { "day": "Sa", "slot": "11:30-12:00", "title": "Ditib und die Bedeutung der institutionellen Zugehörigkeit (Br. Batu)"},
-    { "day": "Sa", "slot": "12:00-12:30", "title": "Mittagessen"},
-    { "day": "Sa", "slot": "12:30-13:00", "title": "Mittagessen"},
+    { "day": "Sa", "slot": "12:00-12:30", "title": "Freizeit"},
+    { "day": "Sa", "slot": "12:30-13:00", "title": "Freizeit"},
     { "day": "Sa", "slot": "13:00-13:30", "title": "Mittagessen"},
     { "day": "Sa", "slot": "13:30-14:00", "title": "Die Lebensgeschichte des Propheten (Seyma Hoca)"},
     { "day": "Sa", "slot": "14:00-14:30", "title": "Die Lebensgeschichte des Propheten (Seyma Hoca)"},
@@ -97,7 +97,7 @@
 
 
     { "day": "So", "slot": "08:00", "title": "Frühstück"},
-    { "day": "So", "slot": "09:00", "title": "Die Bedeutung der Umra: Vorbereitung und Durchführung (Seyma Hoca)"},
+    { "day": "So", "slot": "09:00-09:30", "title": "Die Bedeutung der Umra: Vorbereitung und Durchführung (Seyma Hoca)"},
     { "day": "So", "slot": "09:30-10:00", "title": "Die Bedeutung der Umra: Vorbereitung und Durchführung (Seyma Hoca)" },
     { "day": "So", "slot": "10:00-10:30", "title": "Die Bedeutung der Umra: Vorbereitung und Durchführung (Seyma Hoca)"},
     { "day": "So", "slot": "10:30-11:00", "title": "Kurze Pause"},
