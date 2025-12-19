@@ -95,8 +95,6 @@
     .replace(/\s+/g, " ")
     .trim();
 
-  // Sprach-/format-unabhängiger Day-Key (DE/TR, mit/ohne Datum)
-  // → mon, tue, wed, thu, fri, sat, sun
   function dayKey(s) {
     const n = norm(s || "");
     const first = n.split(" ")[0];
@@ -119,7 +117,7 @@
     if (/^(cumartesi)$/.test(first)) return "sat";
     if (/^(pazar)$/.test(first)) return "sun";
 
-    return first || n; // Fallback
+    return first || n;
   }
 
   const colClass = (d) => `col-${dayKey(d)}`;
@@ -139,9 +137,9 @@
 
     // GOLD – Abfahrt/Hin-/Check-in/Ankunft + spezielle Abschlusszeile
     if (
-      /(abfahrt|hareket)/i.test(t) ||                         // Abfahrt / hareket
-      /(einchecken|check ?in)/i.test(t) ||                    // Check-in
-      /(ankunft.*einchecken|varis.*check ?in)/i.test(t) ||    // Ankunft + Check-in
+      /(abfahrt|hareket)/i.test(t) ||
+      /(einchecken|check ?in)/i.test(t) ||
+      /(ankunft.*einchecken|varis.*check ?in)/i.test(t) ||
       /(abschluss quiz.*(ausblick|vedalas|degerlendirme))/i.test(t)
     ) {
       return "cell-gold";
@@ -162,24 +160,28 @@
       return "cell-green";
     }
 
-    // HELLBLAU – Vorträge/Lehre/Rezitationen allgemein + neue Titel
+    // HELLBLAU – Vorträge/Lehre/Rezitationen allgemein + EXPLIZITE ERGÄNZUNGEN
     if (
+      // allgemein
       /(koranrezitation|kuran tilaveti)/i.test(t) ||
-      /(Kur’an tilaveti + Amfi’de karşılama)/i.test(t) || 
-      /(Katılımcı geri bildirimi, çıkarımlar ve kapanış)/i.test(t) ||
       /(rechtsschulen|mezhepler)/i.test(t) ||
       /(sira|siyer|lebensgeschichte.*prophet|peygamberimizin hayat[iı])/i.test(t) ||
       /(medina.*(zeit|dönemi)|medine)/i.test(t) ||
-      /(umrah|umre)/i.test(t) ||
-      /(nahl.*sure|sure.*nahl)/i.test(t) ||
+      /(umrah|umre|umra)/i.test(t) ||                 // <-- „Umra“ explizit ergänzt
+      /(nahl.*sure|sure.*nahl|surah nahl)/i.test(t) ||// <-- „Surah Nahl …“ ergänzt
       /(beweise.*einheit gottes|wunder des korans|allah.*birligine deliller|kuran.*mucizeleri)/i.test(t) ||
-      /(stellung der frau im islam|kadin.*islam)/i.test(t) ||
+      /(stellung der frau im islam|islamda kadinin yeri)/i.test(t) || // <-- TR explizit ergänzt
       /(wer ist al amin|el emin kimdir)/i.test(t) ||
       /(ditib.*bedeutung.*institution|kurumsal aidiyet.*onemi)/i.test(t) ||
-      /(teilnehmerfeedback.*abschluss)/i.test(t) ||
-      // spezieller Justice/Unrecht-Vortrag:
+      /(teilnehmerfeedback.*abschluss|katilimci geri bildirimi.*cikarimlar.*kapanis)/i.test(t) || // <-- TR explizit
       /(was ist gerechtigkeit im islam|adalet nedir)/i.test(t) ||
-      /(wege.*(un)?gerechtigkeit.*entgegenzuwirken(\s*batu)?|haksizl\w*.*karsi.*koyma.*yollar\w*(\s*batu)?)/i.test(t)
+      /(wege.*(un)?gerechtigkeit.*entgegenzuwirken(\s*batu)?|haksizl\w*.*karsi.*koyma.*yollar\w*(\s*batu)?)/i.test(t) ||
+      // EXPLIZIT: "Kur’an tilaveti Amfi’de karşılama"
+      /(kuran tilaveti.*amfi.*karsilama|amfi.*karsilama.*kuran tilaveti)/i.test(t) ||
+      // EXPLIZIT: Deutsche Formulierungen der genannten Vorträge
+      /(die bedeutung der umra.*vorbereitung.*durchfuhrung)/i.test(t) ||
+      /(surah nahl und ihre botschaften fur die gegenwart|nahl sure.*botschaften)/i.test(t) ||
+      /(die zeit in medina.*botschaften fur die gegenwart)/i.test(t)
     ) {
       return "cell-blue";
     }
@@ -193,7 +195,6 @@
   const findEntry = (day, slot) =>
     (data.entries || []).find(e => dayKey(e.day) === dayKey(day) && e.slot === slot);
 
-  // gleiche Einträge mergen (nur nicht-leere)
   const signature = (e) => {
     if (!e || (isEmptyTitle(e.title) && isEmptyTitle(e.room) && isEmptyTitle(e.note))) return "";
     const t = norm(e.title);
