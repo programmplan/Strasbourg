@@ -67,7 +67,7 @@
 
 
 
-    { "day": "Sa", "slot": "08:00", "title": ""},
+    { "day": "Sa", "slot": "08:00", "title": "Frühstück"},
     { "day": "Sa", "slot": "09:00", "title": "Koranrezitation + Begrüßung im Hörsaal" },
     { "day": "Sa", "slot": "09:30-10:00", "title": "Was ist Gerechtigkeit im Islam? (A. Celil Hoca)" },
     { "day": "Sa", "slot": "10:00-10:30", "title": "Was ist Gerechtigkeit im Islam? (A. Celil Hoca)" },
@@ -96,7 +96,7 @@
 
 
 
-    { "day": "So", "slot": "08:00", "title": ""},
+    { "day": "So", "slot": "08:00", "title": "Frühstück"},
     { "day": "So", "slot": "09:00", "title": "Die Bedeutung der Umra: Vorbereitung und Durchführung (Seyma Hoca)"},
     { "day": "So", "slot": "09:30-10:00", "title": "Die Bedeutung der Umra: Vorbereitung und Durchführung (Seyma Hoca)" },
     { "day": "So", "slot": "10:00-10:30", "title": "Die Bedeutung der Umra: Vorbereitung und Durchführung (Seyma Hoca)"},
@@ -122,30 +122,30 @@
     { "day": "So", "slot": "20:00-20:30", "title": ""},
     { "day": "So", "slot": "20:30-21:00", "title": ""},
 
-    { "day": "Mo", "slot": "08:00", "title": "Wanderung (Essen einpacken)"},
-    { "day": "Mo", "slot": "09:00", "title": "Wanderung + Vortrag: 'Geschwisterlichkeit als Triumph des Muslims' "},
-    { "day": "Mo", "slot": "10:00-10:30", "title": "Wanderung"},
+    { "day": "Mo", "slot": "08:00", "title": "Frühstück"},
+    { "day": "Mo", "slot": "09:00", "title": "Surah Nahl und ihre Botschaften für die Gegenwart (A. Celil Hoca)"},
+    { "day": "Mo", "slot": "10:00-10:30", "title": "Surah Nahl und ihre Botschaften für die Gegenwart (A. Celil Hoca)"},
     { "day": "Mo", "slot": "10:30-11:00", "title": "Wanderung"},
-    { "day": "Mo", "slot": "11:00-11:30", "title": "Wanderung"},
-    { "day": "Mo", "slot": "11:30-12:00", "title": "Wanderung"},
-    { "day": "Mo", "slot": "12:00-12:30", "title": "Mittagessen"},
-    { "day": "Mo", "slot": "12:30-13:00", "title": "Mittagessen"},
-    { "day": "Mo", "slot": "13:00-13:30", "title": "Umrah 101"},
-    { "day": "Mo", "slot": "13:30-14:00", "title": "Umrah 101"},
-    { "day": "Mo", "slot": "14:00-14:30", "title": "Stadtbesichtigung"},
-    { "day": "Mo", "slot": "14:30-15:00", "title": "Stadtbesichtigung"},
-    { "day": "Mo", "slot": "15:00-15:30", "title": "Stadtbesichtigung"},
-    { "day": "Mo", "slot": "15:30-16:00", "title": "Stadtbesichtigung"},
-    { "day": "Mo", "slot": "16:00-16:30", "title": " 'Beweise des Islams' "},
-    { "day": "Mo", "slot": "16:30-17:00", "title": " 'Beweise des Islams' "},
-    { "day": "Mo", "slot": "17:00-17:30", "title": "Abendessen"},
-    { "day": "Mo", "slot": "17:30-18:00", "title": "Abendessen"},
+    { "day": "Mo", "slot": "11:00-11:30", "title": "Teilnehmerfeedback und Erkentnisse sowie Abschluss"},
+    { "day": "Mo", "slot": "11:30-12:00", "title": ""},
+    { "day": "Mo", "slot": "12:00-12:30", "title": ""},
+    { "day": "Mo", "slot": "12:30-13:00", "title": ""},
+    { "day": "Mo", "slot": "13:00-13:30", "title": ""},
+    { "day": "Mo", "slot": "13:30-14:00", "title": ""},
+    { "day": "Mo", "slot": "14:00-14:30", "title": ""},
+    { "day": "Mo", "slot": "14:30-15:00", "title": ""},
+    { "day": "Mo", "slot": "15:00-15:30", "title": ""},
+    { "day": "Mo", "slot": "15:30-16:00", "title": ""},
+    { "day": "Mo", "slot": "16:00-16:30", "title": ""},
+    { "day": "Mo", "slot": "16:30-17:00", "title": ""},
+    { "day": "Mo", "slot": "17:00-17:30", "title": ""},
+    { "day": "Mo", "slot": "17:30-18:00", "title": ""},
     { "day": "Mo", "slot": "18:00-18:30", "title": ""},
     { "day": "Mo", "slot": "18:30-19:00", "title": ""},
     { "day": "Mo", "slot": "19:00-19:30", "title": ""},
     { "day": "Mo", "slot": "19:30-20:00", "title": ""},
-    { "day": "Mo", "slot": "20:00-20:30", "title": "Abschluss Quiz, Verabschiedung und Ausblick"},
-    { "day": "Mo", "slot": "20:30-21:00", "title": "Abschluss Quiz, Verabschiedung und Ausblick"},
+    { "day": "Mo", "slot": "20:00-20:30", "title": ""},
+    { "day": "Mo", "slot": "20:30-21:00", "title": ""},
 
 
 
