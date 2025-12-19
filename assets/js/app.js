@@ -165,6 +165,8 @@
     // HELLBLAU – Vorträge/Lehre/Rezitationen allgemein + neue Titel
     if (
       /(koranrezitation|kuran tilaveti)/i.test(t) ||
+      /(Kur’an tilaveti + Amfi’de karşılama)/i.test(t) || 
+      /(Katılımcı geri bildirimi, çıkarımlar ve kapanış)/i.test(t) ||
       /(rechtsschulen|mezhepler)/i.test(t) ||
       /(sira|siyer|lebensgeschichte.*prophet|peygamberimizin hayat[iı])/i.test(t) ||
       /(medina.*(zeit|dönemi)|medine)/i.test(t) ||
