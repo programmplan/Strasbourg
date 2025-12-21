@@ -139,7 +139,7 @@
     { "day": "Pazartesi", "slot": "20:30-21:00", "title": "" },
 
     { "day": "Salı", "slot": "08:00", "title": "" },
-    { "day": "Salı", "slot": "09:00-09:30", "title": "Hareket" },
+    { "day": "Salı", "slot": "09:00-09:30", "title": "" },
     { "day": "Salı", "slot": "09:30-10:00", "title": "" },
     { "day": "Salı", "slot": "10:00-10:30", "title": "" },
     { "day": "Salı", "slot": "10:30-11:00", "title": "" },

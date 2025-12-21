@@ -151,7 +151,7 @@
 
 
     { "day": "Di", "slot": "08:00", "title": ""},
-    { "day": "Di", "slot": "09:00", "title": "Abfahrt"},
+    { "day": "Di", "slot": "09:00", "title": ""},
     { "day": "Di", "slot": "10:00-10:30", "title": ""},
     { "day": "Di", "slot": "10:30-11:00", "title": ""},
     { "day": "Di", "slot": "11:00-11:30", "title": ""},
