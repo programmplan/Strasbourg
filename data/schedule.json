@@ -124,7 +124,7 @@
 
     { "day": "Mo", "slot": "08:00", "title": "Frühstück"},
     { "day": "Mo", "slot": "09:00-09:30", "title": "Surah Nahl und ihre Botschaften für die Gegenwart (A. Celil Hoca)"},
-    { "day": "So", "slot": "09:30-10:00", "title": "Surah Nahl und ihre Botschaften für die Gegenwart (A. Celil Hoca)" },
+    { "day": "Mo", "slot": "09:30-10:00", "title": "Surah Nahl und ihre Botschaften für die Gegenwart (A. Celil Hoca)" },
     { "day": "Mo", "slot": "10:00-10:30", "title": "Surah Nahl und ihre Botschaften für die Gegenwart (A. Celil Hoca)"},
     { "day": "Mo", "slot": "10:30-11:00", "title": ""},
     { "day": "Mo", "slot": "11:00-11:30", "title": "Teilnehmerfeedback und Erkentnisse sowie Abschluss"},
